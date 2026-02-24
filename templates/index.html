@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculatrice Erlang B</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fb;
+            color: #222;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;          /* espace entre les modules */
+            margin-top: 30px;
+            flex-wrap: wrap;    /* permet de repasser en vertical si écran petit */
+        }
+        .module {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 280px;
+            flex: 1 1 280px;
+        }
+        /* Couleurs spécifiques pour chaque module */
+        .channels {
+            background: #e6f7e6; /* vert pâle */
+        }
+        .channels h3 {
+            color: green;
+        }
+        .loss {
+            background: #e6f0ff; /* bleu pâle */
+        }
+        .loss h3 {
+            color: blue;
+        }
+        .traffic {
+            background: #fff3e6; /* orange pâle */
+        }
+        .traffic h3 {
+            color: orange;
+        }
+        input[type="text"] {
+            padding: 5px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        input[type="submit"] {
+            background-color: #2a9df4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #1673c8;
+        }
+        /* Responsive : si écran < 900px, modules passent en vertical */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Calculatrice Erlang B</h2>
+
+    <div class="container">
+        <div class="module channels">
+            <h3>1. Calcul du nombre de canaux (N)</h3>
+            <form action="/channels" method="post">
+                Trafic A (Erlangs): <input type="text" name="A" value="10"><br>
+                Probabilité de perte (Pr): <input type="text" name="Pr" value="0.01"><br>
+                <input type="submit" value="Calculer N">
+            </form>
+            {% if result_channels %}
+                <p style="color:green;">{{ result_channels }}</p>
+            {% endif %}
+        </div>
+
+        <div class="module loss">
+            <h3>2. Calcul de la probabilité de perte (Pr)</h3>
+            <form action="/loss" method="post">
+                Trafic A (Erlangs): <input type="text" name="A" value="10"><br>
+                Nombre de canaux (N): <input type="text" name="N" value="15"><br>
+                <input type="submit" value="Calculer Pr">
+            </form>
+            {% if result_loss %}
+                <p style="color:blue;">{{ result_loss }}</p>
+            {% endif %}
+        </div>
+
+        <div class="module traffic">
+            <h3>3. Calcul du trafic A</h3>
+            <form action="/traffic" method="post">
+                Nombre de canaux (N): <input type="text" name="N" value="15"><br>
+                Probabilité de perte (Pr): <input type="text" name="Pr" value="0.01"><br>
+                <input type="submit" value="Calculer A">
+            </form>
+            {% if result_traffic %}
+                <p style="color:orange;">{{ result_traffic }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
