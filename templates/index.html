@@ -18,9 +18,9 @@
         .container {
             display: flex;
             justify-content: center;
-            gap: 40px;          /* espace entre les modules */
+            gap: 40px;
             margin-top: 30px;
-            flex-wrap: wrap;    /* permet de repasser en vertical si écran petit */
+            flex-wrap: wrap;
         }
         .module {
             padding: 15px;
@@ -29,26 +29,13 @@
             width: 280px;
             flex: 1 1 280px;
         }
-        /* Couleurs spécifiques pour chaque module */
-        .channels {
-            background: #e6f7e6; /* vert pâle */
-        }
-        .channels h3 {
-            color: green;
-        }
-        .loss {
-            background: #e6f0ff; /* bleu pâle */
-        }
-        .loss h3 {
-            color: blue;
-        }
-        .traffic {
-            background: #fff3e6; /* orange pâle */
-        }
-        .traffic h3 {
-            color: orange;
-        }
-        input[type="text"] {
+        .channels { background: #e6f7e6; }
+        .channels h3 { color: green; }
+        .loss { background: #e6f0ff; }
+        .loss h3 { color: blue; }
+        .traffic { background: #fff3e6; }
+        .traffic h3 { color: orange; }
+        input[type="text"], input[type="number"] {
             padding: 5px;
             margin: 5px 0;
             width: 100%;
@@ -64,12 +51,24 @@
         input[type="submit"]:hover {
             background-color: #1673c8;
         }
-        /* Responsive : si écran < 900px, modules passent en vertical */
         @media (max-width: 900px) {
             .container {
                 flex-direction: column;
                 align-items: center;
             }
+        }
+        .credits {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #333;
+            padding: 10px;
+            border-top: 2px solid #ccc;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -80,8 +79,8 @@
         <div class="module channels">
             <h3>1. Calcul du nombre de canaux (N)</h3>
             <form action="/channels" method="post">
-                Trafic A (Erlangs): <input type="text" name="A" value="10"><br>
-                Probabilité de perte (Pr): <input type="text" name="Pr" value="0.01"><br>
+                Trafic A (Erlangs): <input type="number" name="A" value="10" step="any" min="0"><br>
+                Probabilité de perte (Pr): <input type="number" name="Pr" value="0.01" step="any" min="0" max="1"><br>
                 <input type="submit" value="Calculer N">
             </form>
             {% if result_channels %}
@@ -92,8 +91,8 @@
         <div class="module loss">
             <h3>2. Calcul de la probabilité de perte (Pr)</h3>
             <form action="/loss" method="post">
-                Trafic A (Erlangs): <input type="text" name="A" value="10"><br>
-                Nombre de canaux (N): <input type="text" name="N" value="15"><br>
+                Trafic A (Erlangs): <input type="number" name="A" value="10" step="any" min="0"><br>
+                Nombre de canaux (N): <input type="number" name="N" value="15" step="1" min="1"><br>
                 <input type="submit" value="Calculer Pr">
             </form>
             {% if result_loss %}
@@ -104,14 +103,18 @@
         <div class="module traffic">
             <h3>3. Calcul du trafic A</h3>
             <form action="/traffic" method="post">
-                Nombre de canaux (N): <input type="text" name="N" value="15"><br>
-                Probabilité de perte (Pr): <input type="text" name="Pr" value="0.01"><br>
+                Nombre de canaux (N): <input type="number" name="N" value="15" step="1" min="1"><br>
+                Probabilité de perte (Pr): <input type="number" name="Pr" value="0.01" step="any" min="0" max="1"><br>
                 <input type="submit" value="Calculer A">
             </form>
             {% if result_traffic %}
                 <p style="color:orange;">{{ result_traffic }}</p>
             {% endif %}
         </div>
+    </div>
+
+    <div class="credits">
+        Réalisé par <strong>Tatio Saah Fabrice</strong> et <strong>Tchamou Pouassi Audrey</strong>
     </div>
 </body>
 </html>
